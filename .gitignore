@@ -1,0 +1,11 @@
+.DS_Store
+.idea
+
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+
+config/*
+!config/config.sample.yaml
+!config/networks.sample.csv

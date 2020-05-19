@@ -1,0 +1,52 @@
+---
+###################
+# Meraki Settings #
+###################
+
+meraki_api_key: 0000000000000000000000000000000000000000
+
+###################
+# Redis Settings  #
+###################
+
+# Leave the host as 'redis' if you are using Docker, for local testing set 'localhost'
+redis_host: redis
+redis_port: 6379
+redis_db: 0
+
+# How long to keep the cached entries (in seconds)
+# A good default value would be the DHCP lease time for the network
+# The default is 28800 (8h)
+redis_expire: 28800
+
+###################
+# pxGrid Settings #
+###################
+
+# Hostname of the ISE instance
+pxgrid_host: ise.acme.com
+
+# When using certificate based authentication the nodename must match the Subject Name in the certificate
+pxgrid_nodename: meraki-ise
+
+# Will be ignored if certificate based authentication is used
+pxgrid_password:
+
+# This string will be registered with pxGrid as the client description
+pxgrid_description: Meraki-pxGrid-Integration
+
+# Certificates for certificate based authentication
+# Note that the client key must be in unencrypted PEM format
+# by default ISE will give you an encrypted key. To decrypt it use:
+#     $ openssl rsa -in <encryped file from ISE> -out client.key
+# In the docker container the files should be in /app/config/
+pxgrid_client_cert: "config/client.pem"
+pxgrid_client_key: "config/client.key"
+pxgrid_ca_cert: "config/ca.pem"
+pxgrid_ca_verify: no
+
+# This map contains a list of Authz profiles that ISE sends along with the session notification and their corresponding
+# group mappings
+profile_map:
+  Unknown: 100
+  Students: 101

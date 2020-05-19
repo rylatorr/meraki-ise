@@ -1,0 +1,7 @@
+backoff
+meraki<=0.99
+PyYAML
+redis
+requests
+websockets
+sanic

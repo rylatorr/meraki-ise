@@ -1,0 +1,19 @@
+version: "3"
+services:
+  app:
+    build: .
+    volumes:
+      - ./config:/app/config
+  redis:
+    image: redis
+
+  # not needed to run normally, just using for debugging
+  redis-commander:
+    container_name: redis-commander
+    hostname: redis-commander
+    image: rediscommander/redis-commander:latest
+    restart: always
+    environment:
+    - REDIS_HOSTS=local:redis:6379
+    ports:
+    - "8081:8081"
