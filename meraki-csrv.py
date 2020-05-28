@@ -15,7 +15,7 @@ __email__ = "fkaechel@cisco.com, rylatorr@cisco.com"
 __copyright__ = "Copyright (c) 2020 Cisco and/or its affiliates"
 __license__ = "Cisco Sample Code License"
 
-app = Sanic("meraki-clearpass")
+app = Sanic("meraki-csrv")
 
 logging.getLogger().setLevel(logging.INFO)
 # The Meraki logger is very talkative, set it to ERROR only

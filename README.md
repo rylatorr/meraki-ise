@@ -57,6 +57,8 @@ for this purpose. The Organization name needes to be supplied exactly as it is c
 Redis is an in-memory key-value store that caches client mappings (as well as the list of network mappings.) This may 
 be run as a Docker container.  
 
+You will need to have the required ISE certificates and keys in place here as well.
+
 The profile map is used to define which Group Policies to map Authorization Profiles to. The group policy ID can be
 found using the Meraki API call /networks/:networkId/groupPolicies. This assumes all networks will use a consistent 
 group policy ID for each purpose. The IDs are automatically generated sequentially so as long as the group polices are 
@@ -73,16 +75,12 @@ connected subnets at the site. The results are written to the networks.csv.
 This table should be re-generated when VLAN/addressing/site changes are made. It may be a good idea to schedule a cron 
 job to automatically execute this periodically (eg. daily or weekly). 
 
+A sample with the required headings can be found in
+`config/networks.sample.csv`.
+
 ## Running the code
 
 The easiest way to run this application is using Docker. Alternatively the code can be run directly using Python.
-
-But before you can run the code you will have to edit the configuration file named `config.yaml` in the `config`
-subfolder and ensure that you have all required certificates and keys in place.
-
-Furthermore, in this implementation of the mapper a CSV files that contains the Meraki network IDs and their
-corresponding IP subnets is required as well. A sample with the required headings can be found in
-`config/networks.sample.csv`.
 
 ### Docker
 
@@ -118,4 +116,8 @@ This will also mount the `config` subdirectory from this folder into the contain
 4. Run application:
    ```
    python meraki-pxgrid.py <config file>
+   ```
+   or, to run the REST context server listener:
+   ```
+   python meraki-csrv.py
    ```
