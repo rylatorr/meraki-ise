@@ -4,6 +4,7 @@
 ###################
 
 meraki_api_key: 0000000000000000000000000000000000000000
+meraki_org_name: Customer Org Name
 
 ###################
 # Redis Settings  #

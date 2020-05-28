@@ -46,7 +46,7 @@ class GroupMapper:
         """
         Do the mapping.
 
-        :param session: Message from ClearPass external context server
+        :param session: Message from external context server
         :param name_key: Dictionary key for the username field in the message
         :param mac_key: Dictionary key for the MAC address field in the message
         :param group_key: Dictionary key for the group field in the message

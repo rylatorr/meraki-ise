@@ -16,7 +16,7 @@ class MerakiConfig:
 def getNetworkId(ipaddr):
     for x in subnetMapList:
         if ip_address(ipaddr) in ip_network(x['subnet']):
-            print (f'\n{ipaddr} is in {x["networkId"]}')
+            print(f'\n{ipaddr} is in {x["networkId"]}')
             return x["networkId"]
 
 def main():

@@ -8,7 +8,7 @@ import meraki
 import meraki.exceptions
 import yaml
 
-from group_mapper_cp import GroupMapper
+from group_mapper_csrv import GroupMapper
 
 __author__ = "Felix Kaechele, Ryan LaTorre"
 __email__ = "fkaechel@cisco.com, rylatorr@cisco.com"
