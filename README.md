@@ -113,7 +113,11 @@ This will also mount the `config` subdirectory from this folder into the contain
    ```
    pip install -r requirements.txt
    ```
-4. Run application:
+4. Run redis
+   ```buildoutcfg
+   docker run -d -p 6379:6379 redis
+   ```
+5. Run application:
    ```
    python meraki-pxgrid.py <config file>
    ```
