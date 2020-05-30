@@ -1,4 +1,4 @@
-# Meraki ISE Identity Mapper
+# Meraki Identity Injector
 
 This proof-of-concept application uses Cisco Identity Services Engine (ISE) to apply group policies in 
 a Cisco Meraki Network.
@@ -6,7 +6,9 @@ a Cisco Meraki Network.
 In a Meraki combined network (MX+MR) a client identity is shared throughout the network. Identity sourced during WiFi authentication can be used for policy at the MX. This all works out of the box, no configuration needed. It’s a beautiful thing.
 Customers implementing distributed MX appliances may have an existing investment in Cisco Aironet, Catalyst, Identity Services Engine (ISE) and not able or willing to refresh to MR at this time.
 
-![GitHub Logo](meraki-ise-process.png)
+![Identity Injector process](meraki-ise-process.png)
+
+[<img src="https://img.youtube.com/vi/nKbivPqtt5E/maxresdefault.jpg" width="100%">](https://youtu.be/nKbivPqtt5E)
 
 ## Goals and Impact
 * Leverage user identity and authorization from ISE to:
@@ -83,6 +85,10 @@ A sample with the required headings can be found in
 The easiest way to run this application is using Docker. Alternatively the code can be run directly using Python.
 
 ### Docker
+
+The included docker-compose.yml will build containers for the redis store, meraki-ise, meraki-csrv and redis-commander.
+You will want to comment out either meraki-ise or meraki-csrv depending which identity engine youo're integrating with. 
+You may also want to comment redis-commander as it's not required other than for troubleshooting.
 
 First you need to build the container: 
 ```

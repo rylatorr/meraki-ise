@@ -4,10 +4,19 @@ services:
     build: .
     volumes:
       - ./config:/app/config
+  app-csrv:
+    build:
+      context: .
+      dockerfile: Dockerfile-csrv
+    volumes:
+      - ./config:/app/config
+    ports:
+      - 8080:8080
   redis:
     image: redis
-
-  # not needed to run normally, just using for debugging
+    restart: always
+    command: [sh, -c, "rm -f /data/dump.rdb && redis-server"]  # disable persistence
+  # redis-commander is not needed to run but it can be handy for debugging
   redis-commander:
     container_name: redis-commander
     hostname: redis-commander
