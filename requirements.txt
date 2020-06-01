@@ -1,5 +1,5 @@
 backoff
-meraki<=0.99
+meraki>=1.0.0b6
 PyYAML
 redis
 requests

@@ -56,7 +56,7 @@ class GroupMapper:
         mappings = []
 
         name = str(session[name_key])
-        mac = str(session[mac_key])
+        mac = str(session[mac_key]).upper()
         ip = str(session[ip_key])
 
         if len(session['ipAddress']) == 0:

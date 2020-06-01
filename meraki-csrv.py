@@ -27,12 +27,12 @@ class MerakiConfig:
         self.api_key = config['meraki_api_key']
 
 def provision_client(network_id: str, mac: str, username: str, mapped_group: str):
+    clients = [{'mac': mac, 'name': username}]
+    device_policy = 'Group policy'
     dashboard = meraki.DashboardAPI(meraki_config.api_key, output_log=False, print_console=False)
-
-    return dashboard.clients.provisionNetworkClients(networkId=network_id,
-                                                     mac=mac,
-                                                     name=username,
-                                                     devicePolicy="Group policy",
+    return dashboard.networks.provisionNetworkClients(network_id,
+                                                     clients,
+                                                     device_policy,
                                                      groupPolicyId=str(mapped_group))
 
 @app.route("/")
