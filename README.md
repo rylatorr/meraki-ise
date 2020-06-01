@@ -3,12 +3,18 @@
 This proof-of-concept application uses Cisco Identity Services Engine (ISE) to apply group policies in 
 a Cisco Meraki Network.
 
-In a Meraki combined network (MX+MR) a client identity is shared throughout the network. Identity sourced during WiFi authentication can be used for policy at the MX. This all works out of the box, no configuration needed. It’s a beautiful thing.
-Customers implementing distributed MX appliances may have an existing investment in Cisco Aironet, Catalyst, Identity Services Engine (ISE) and not able or willing to refresh to MR at this time.
+In a Meraki combined network (MX+MR) a client identity is shared throughout the network. Identity sourced during WiFi 
+authentication can be used for policy at the MX. This all works out of the box, no configuration needed. It’s a 
+beautiful thing. Customers implementing distributed MX appliances may have an existing investment in Cisco Aironet, 
+Catalyst, Identity Services Engine (ISE) and may not be able or willing to refresh to MR at this time.
 
 ![Identity Injector process](meraki-ise-process.png)
 
-[<img src="https://img.youtube.com/vi/nKbivPqtt5E/maxresdefault.jpg" width="100%">](https://youtu.be/nKbivPqtt5E)
+Overview and Demo Video:<br>
+[<img src="https://img.youtube.com/vi/nKbivPqtt5E/maxresdefault.jpg" width="50%">](https://youtu.be/nKbivPqtt5E)
+
+Deployment Walkthrough Video:<br>
+[<img src="https://img.youtube.com/vi/nqRjWcDucE8/maxresdefault.jpg" width="50%">](https://youtu.be/nqRjWcDucE8)
 
 ## Goals and Impact
 * Leverage user identity and authorization from ISE to:
@@ -31,16 +37,17 @@ a bug that prevents pxGrid events from being sent out over the WebSocket.
 You will also need to create a client certificate that is used by the application to authenticate with ISE.
 
 1. Launch the ISE Admin GUI using your browser
-2. Navigate to Administration -> pxGrid Services
-3. Click on the Certificates tab
-4. Fill in the form as follows:
+2. Navigate to Administration -> System > Deployment and enable the pxGrid service on the appropriate node
+3. Navigate to Administration -> pxGrid Services
+4. Click on the Certificates tab
+5. Fill in the form as follows:
    - I want to:                   select "Generate a single certificate (without a certificate signing request)"
    - Common Name (CN):            fill in the name that you want the application to identify as
    - Certificate Download Format: select "Certificate in Privacy Enhanced Electronic Mail (PEM) format, key in PKCS8 PEM format (including certificate chain)"
    - Certificate Password:        fill in a password
    - Confirm Password:            fill in the same password as above
-5. Click the 'Create' button. A ZIP file will be offered for download.
-6. Extract the downloaded ZIP file. A new folder containing a few certificate files and a keyfile will be created.
+6. Click the 'Create' button. A ZIP file will be offered for download.
+7. Extract the downloaded ZIP file. A new folder containing a few certificate files and a keyfile will be created.
 
 From these files we are interested in the following three:
  - Our Client certificate and key: the two files prefixed with the Common Name you chose (.cer and .key)
