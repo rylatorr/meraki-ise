@@ -10,10 +10,10 @@ Catalyst, Identity Services Engine (ISE) and may not be able or willing to refre
 
 ![Identity Injector process](meraki-ise-process.png)
 
-Overview and Demo Video (7m):<br>
+Overview and Demo Video (7m):  
 [<img src="https://img.youtube.com/vi/nKbivPqtt5E/maxresdefault.jpg" width="50%">](https://youtu.be/nKbivPqtt5E)
 
-Deployment Walkthrough Video (15m):<br>
+Deployment Walkthrough Video (15m):  
 [<img src="https://img.youtube.com/vi/nqRjWcDucE8/maxresdefault.jpg" width="50%">](https://youtu.be/nqRjWcDucE8)
 
 ## Goals and Impact
