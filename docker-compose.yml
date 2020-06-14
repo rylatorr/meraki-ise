@@ -12,6 +12,7 @@ services:
       - ./config:/app/config
     ports:
       - 8080:8080
+      - 8443:8443
   redis:
     image: redis
     restart: always

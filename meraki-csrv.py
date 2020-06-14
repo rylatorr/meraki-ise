@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 from sanic import Sanic
 from sanic import response
+from sanic_httpauth import HTTPBasicAuth
+import hashlib
+import ssl
 import json
 import argparse
 from sanic.log import logger, logging
@@ -10,17 +13,21 @@ import yaml
 
 from group_mapper_csrv import GroupMapper
 
-__author__ = "Felix Kaechele, Ryan LaTorre"
-__email__ = "fkaechel@cisco.com, rylatorr@cisco.com"
+__author__ = "Ryan LaTorre"
+__email__ = "rylatorr@cisco.com"
 __copyright__ = "Copyright (c) 2020 Cisco and/or its affiliates"
 __license__ = "Cisco Sample Code License"
 
 app = Sanic("meraki-csrv")
+auth = HTTPBasicAuth()
 
-logging.getLogger().setLevel(logging.INFO)
+# The root logger
+#logging.getLogger().setLevel(logging.INFO)
+logging.getLogger().setLevel(logging.DEBUG)
 # The Meraki logger is very talkative, set it to ERROR only
 logging.getLogger('meraki').setLevel(logging.ERROR)
-logger.setLevel(logging.INFO)
+#logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 
 class MerakiConfig:
     def __init__(self, config):
@@ -35,11 +42,30 @@ def provision_client(network_id: str, mac: str, username: str, mapped_group: str
                                                      device_policy,
                                                      groupPolicyId=str(mapped_group))
 
+# used for HTTP auth
+def hash_password(salt, password, yaml_config):
+    salted = password + salt
+    return hashlib.sha512(salted.encode("utf8")).hexdigest()
+
+
+@auth.verify_password
+def verify_password(username, password):
+    if username in users:
+        return users.get(username) == hash_password(app_salt, password, yaml_config)
+    return False
+
+@app.route("/testauth")
+@auth.login_required
+def testauth(request):
+    return response.json({"Hello ": auth.username(request)})
+
+
 @app.route("/")
 async def test(request):
     return response.json({"hello": "world"})
 
 @app.route("/api/user-login", methods=['POST'])
+@auth.login_required
 async def userLogin(request):
     message = json.loads(request.body)
     logger.debug(f'Message is: {message}')
@@ -82,4 +108,23 @@ if __name__ == "__main__":
 
     group_mapper = GroupMapper(yaml_config)
 
-    app.run(host="0.0.0.0", port=8080)
+    yaml_config['networks_file_path'] = networks_file_path
+
+    # Retrieve authorized HTTP users
+    app_salt = yaml_config.get('app_salt')
+    users = yaml_config.get('http_users')
+    for k, v in users.items():
+        users[k] = hash_password(app_salt, v, yaml_config)
+    logger.debug(f'users dict is {users}')
+
+    if yaml_config['use_ssl']:
+        # run on HTTPS
+        context = ssl.create_default_context(purpose=ssl.Purpose.CLIENT_AUTH)
+
+        context.load_cert_chain(yaml_config.get('csrv_server_cert', 'config/meraki-csrv.crt'),
+                                keyfile=yaml_config.get('csrv_server_key', 'config/meraki-csrv.key'))
+        app.go_fast(host="0.0.0.0", port=8443, ssl=context, debug=True)
+    else:
+        # run on HTTP
+        app.run(host="0.0.0.0", port=8080)
+

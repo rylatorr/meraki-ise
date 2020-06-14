@@ -5,3 +5,5 @@ redis
 requests
 websockets
 sanic
+Sanic-HTTPAuth
+ssl

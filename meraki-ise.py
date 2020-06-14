@@ -18,8 +18,9 @@ from websockets import ConnectionClosed
 from group_mapper import GroupMapper
 from pxgrid import PxgridConfig, PxgridSessionPubsub, PxgridSessionService
 
-__author__ = "Felix Kaechele, Ryan LaTorre"
-__email__ = "fkaechel@cisco.com, rylatorr@cisco.com"
+__author__ = "Ryan LaTorre"
+__email__ = "rylatorr@cisco.com"
+__contributors__ = "Felix Kaechele fkaechel@cisco.com"
 __copyright__ = "Copyright (c) 2020 Cisco and/or its affiliates"
 __license__ = "Cisco Sample Code License"
 

@@ -1,5 +1,3 @@
-# author: Felix Kaechele <fkaechel@cisco.com>
-
 import json
 import logging
 import ssl

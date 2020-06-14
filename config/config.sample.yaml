@@ -20,9 +20,9 @@ redis_db: 0
 # The default is 28800 (8h)
 redis_expire: 28800
 
-###################
-# pxGrid Settings #
-###################
+#######################
+# ISE pxGrid Settings #
+#######################
 
 # Hostname of the ISE instance
 pxgrid_host: ise.acme.com
@@ -46,8 +46,29 @@ pxgrid_client_key: "config/client.key"
 pxgrid_ca_cert: "config/ca.pem"
 pxgrid_ca_verify: no
 
-# This map contains a list of Authz profiles that ISE sends along with the session notification and their corresponding
-# group mappings
+#####################################
+# ClearPass Context Server Settings #
+#####################################
+
+# HTTP Basic Auth
+# App salt is any random/secret string
+app_salt: 5dbab1e4-acef-11ea-9dda-acde48001122
+http_users:
+  admin1: password
+
+# If desired, run the server on HTTPS (port 8443) rather than HTTP (port 8080)
+use_ssl: no
+csrv_server_cert: "config/meraki-csrv.crt"
+csrv_server_key: "config/meraki-csrv.key"
+
+#################################
+# Role to Group Policy Mappings #
+#################################
+
+# This map contains a list of Authz profiles (role names) that ISE (ClearPass) sends along with the session
+# notification and their corresponding group mappings.
+
 profile_map:
-  Unknown: 100
-  Students: 101
+  Employees: 100
+  Contractors: 101
+  Students: 102

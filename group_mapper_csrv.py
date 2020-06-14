@@ -31,14 +31,20 @@ class GroupMapper:
         logger.error(f"Unable to map {ip} to an existing Meraki Network")
 
     def map_to_groupid(self, session: dict) -> Optional[str]:
+        #logger.debug(f"hit map_to_groupid. roles are . {session[self._profile_key]}")
+        # CP send roles as a single string  with multiple comma-separated values. Split into list and trim whitespace
+        roleslist = session[self._profile_key].split(',')
+        roleslist = [x.strip(' ') for x in roleslist]
+        logger.debug(f"roles are {roleslist}")
         profile_map = self.config.get('profile_map')
         # make profile name case insensitive
         profile_map = {k.lower(): v for k, v in profile_map.items()}
         logger.debug(f"profile_map is ({profile_map})")
         if profile_map:
-            group = profile_map.get(session[self._profile_key])
-            if group:
-                return str(group)
+            for profile in roleslist:
+                group = profile_map.get(profile.lower())
+                if group:
+                    return str(group)
         return None
 
     def map(self, session: dict, name_key: str = 'userName', mac_key: str = 'macAddress', ip_key: str = 'ipAddress') -> List[
