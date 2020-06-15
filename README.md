@@ -59,6 +59,8 @@ openssl rsa -in <common name>.key -out client.key
 ```
 Enter the key's password to unlock and decrypt the key. Keep the key safe.
 
+You will place the certificate and key files in the app config directory. 
+
 ## Config.yaml
 In the Meraki section, an API key with Org RW is needed. It is recommended that a dedicated service account be created 
 for this purpose. The Organization name needes to be supplied exactly as it is configured (case sensitive).
@@ -133,8 +135,4 @@ This will also mount the `config` subdirectory from this folder into the contain
 5. Run application:
    ```
    python meraki-pxgrid.py <config file>
-   ```
-   or, to run the REST context server listener:
-   ```
-   python meraki-csrv.py
    ```
