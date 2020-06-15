@@ -3,9 +3,9 @@
 This proof-of-concept application uses Cisco Identity Services Engine (ISE) to apply group policies in 
 a Cisco Meraki Network.
 
-In a Meraki combined network (MX+MR) a client identity is shared throughout the network. Identity sourced during WiFi 
+In a Meraki combined network (MX+MR) a client identity is shared throughout the network. Identity sourced during WiFi
 authentication can be used for policy at the MX. This all works out of the box, no configuration needed. It’s a 
-beautiful thing. Customers implementing distributed MX appliances may have an existing investment in Cisco Aironet, 
+beautiful thing. Customers implementing distributed MX appliances may have an existing investment in Cisco Aironet,
 Catalyst, Identity Services Engine (ISE) and may not be able or willing to refresh to MR at this time.
 
 ![Identity Injector process](meraki-ise-process.png)
@@ -31,7 +31,7 @@ Deployment Walkthrough Video (15m):
 ## Preparing ISE
 
 Ensure that you have a recent version (i.e. 2.4 or newer) of ISE deployed and have pxGrid Services enabled.
-If you are running ISE 2.6 make sure you have at least version 2.6.0.156-Patch6-20031016. Some older versions contain 
+If you are running ISE 2.6 make sure you have at least version 2.6.0.156-Patch6-20031016. Some older versions contain
 a bug that prevents pxGrid events from being sent out over the WebSocket.
 
 You will also need to create a client certificate that is used by the application to authenticate with ISE.
@@ -62,28 +62,28 @@ Enter the key's password to unlock and decrypt the key. Keep the key safe.
 You will place the certificate and key files in the app config directory. 
 
 ## Config.yaml
-In the Meraki section, an API key with Org RW is needed. It is recommended that a dedicated service account be created 
+In the Meraki section, an API key with Org RW is needed. It is recommended that a dedicated service account be created
 for this purpose. The Organization name needes to be supplied exactly as it is configured (case sensitive).
 
-Redis is an in-memory key-value store that caches client mappings (as well as the list of network mappings.) This may 
+Redis is an in-memory key-value store that caches client mappings (as well as the list of network mappings.) This may
 be run as a Docker container.  
 
 You will need to have the required ISE certificates and keys in place here as well.
 
 The profile map is used to define which Group Policies to map Authorization Profiles to. The group policy ID can be
-found using the Meraki API call /networks/:networkId/groupPolicies. This assumes all networks will use a consistent 
-group policy ID for each purpose. The IDs are automatically generated sequentially so as long as the group polices are 
+found using the Meraki API call /networks/:networkId/groupPolicies. This assumes all networks will use a consistent
+group policy ID for each purpose. The IDs are automatically generated sequentially so as long as the group polices are
 created in the same order (or networks are bound to a common template, or cloned from a master) this will align.
 
 ## Preparing networks.csv
-In an enterprise deployment with a distributed WAN, clients may be centrally authenticating from various sites. 
+In an enterprise deployment with a distributed WAN, clients may be centrally authenticating from various sites.
 Meraki-ise mapper determines which Meraki network ID is applicable by looking up the client IP Address in a table of
-subnet-to-network mappings. This table is loaded from config/networks.csv. 
+subnet-to-network mappings. This table is loaded from config/networks.csv.
 
-A utility program genNetworkSubnetCSV.py has been included to crawl a Meraki organization and enumerate all directly 
+A utility program genNetworkSubnetCSV.py has been included to crawl a Meraki organization and enumerate all directly
 connected subnets at the site. The results are written to the networks.csv.
 
-This table should be re-generated when VLAN/addressing/site changes are made. It may be a good idea to schedule a cron 
+This table should be re-generated when VLAN/addressing/site changes are made. It may be a good idea to schedule a cron
 job to automatically execute this periodically (eg. daily or weekly). 
 
 A sample with the required headings can be found in
@@ -96,7 +96,7 @@ The easiest way to run this application is using Docker. Alternatively the code 
 ### Docker
 
 The included docker-compose.yml will build containers for the redis store, meraki-ise, meraki-csrv and redis-commander.
-You will want to comment out either meraki-ise or meraki-csrv depending which identity engine youo're integrating with. 
+You will want to comment out either meraki-ise or meraki-csrv depending which identity engine youo're integrating with.
 You may also want to comment redis-commander as it's not required other than for troubleshooting.
 
 First you need to build the container: 
@@ -129,7 +129,7 @@ This will also mount the `config` subdirectory from this folder into the contain
    pip install -r requirements.txt
    ```
 4. Run redis
-   ```buildoutcfg
+   ```
    docker run -d -p 6379:6379 redis
    ```
 5. Run application:
