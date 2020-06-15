@@ -60,7 +60,8 @@ openssl rsa -in <common name>.key -out client.key
 ```
 Enter the key's password to unlock and decrypt the key. Keep the key safe.
 
-You will place the certificate and key files in the app config directory. 
+You will place the certificate and key files in the app config directory. They are referenced in
+config.yaml as pxgrid_client_cert, pxgrid_client_key and pxgrid_ca_cert.
 
 ## Config.yaml
 In the Meraki section, an API key with Org RW is needed. It is recommended that a dedicated service 
