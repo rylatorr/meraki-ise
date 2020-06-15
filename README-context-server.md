@@ -1,14 +1,14 @@
 # Meraki Identity Injector
 
-This proof-of-concept application allows a third-party AAA server to apply group policies in 
+This proof-of-concept application allows a third-party AAA server to apply group policies in
 a Cisco Meraki Network. As implemented, any system capable of making a RESTful HTTP call to the API can use this,
-it has been initially developed and tested with Aruba ClearPass. These instructions apply to ClearPass. 
+it has been initially developed and tested with Aruba ClearPass. These instructions apply to ClearPass.
 
-In a Meraki combined network (MX+MR) a client identity is shared throughout the network. Identity sourced during WiFi 
-authentication can be used for policy at the MX. This all works out of the box, no configuration needed. It’s a 
+In a Meraki combined network (MX+MR) a client identity is shared throughout the network. Identity sourced during WiFi
+authentication can be used for policy at the MX. This all works out of the box, no configuration needed. It’s a
 beautiful thing. Customers implementing distributed MX appliances may have an existing investment in traditional
 infrastructure and may not be able or willing to refresh to MR at this time. If ClearPass is currently used
-for AAA services, that context is useful to the MX. 
+for AAA services, that context is useful to the MX.
 
 ![Identity Injector process](meraki-ise-process.png)
 
@@ -34,20 +34,20 @@ of development this was tested with ClearPass version 6.9 but does not depend on
 Older versions should be compatible.
 
 ### ClearPass Configuration
-1. Confirm basic 802.1x functionality is working as desired on the wired/wireless network, including integration 
+1. Confirm basic 802.1x functionality is working as desired on the wired/wireless network, including integration
 with external directories such as Microsoft Active Directory. Also appropriate roles that can be mapped to a
 Group Policy in Meraki Dashboard. For testing, local users may be configured in the on board identity store.
 
-    Ensure the network access devices are configured to send RADIUS accounting messages. These are required for 
+    Ensure the network access devices are configured to send RADIUS accounting messages. These are required for
 ClearPass to send the context notification.
 
 
 2. If not already in use, enable Insight.  
-     Browse to Administration > Server Manager > Server Configuration. On the Server Configuration page, select the 
-     ClearPass node you want to configure. The Server Configuration dialog opens. To enable the ClearPass Insight 
+     Browse to Administration > Server Manager > Server Configuration. On the Server Configuration page, select the
+     ClearPass node you want to configure. The Server Configuration dialog opens. To enable the ClearPass Insight
      reporting tool on this node, select the Enable Insight check box.
      
-3. Define the endpoint context server (Meraki Identity Injector). Browse to  Administration > External Servers > 
+3. Define the endpoint context server (Meraki Identity Injector). Browse to  Administration > External Servers >
 Endpoint Context Servers. Add the Identity Injector. If you will enable SSL replace the port below with 8443.  
     Server Type: Generic HTTP Context Server  
     Server Name: `<DNS name or IP address of server>`  
@@ -101,17 +101,17 @@ interval is configured for 30 seconds. If desired, this can be reduced as low as
 
 ## SSL Certificate for HTTP server (optional)
 If enabling SSL you will need to create a server certificate. It's probably best to employ a signed certificate using
-whatever processes are used for other services, but a self-signed certificate can be easily generated using openssl:  
+whatever processes are used for other services, but a self-signed certificate can be easily generated using openssl: 
     
     openssl req -x509 -sha256 -nodes -days 1095 -newkey rsa:2048 -keyout meraki-csrv.key -out meraki-csrv.crt
 
 Copy the certificate and key file to the config folder of the app.
 
 ## Config.yaml
-In the Meraki section, an API key with Org RW permission is needed. It is recommended that a dedicated service account 
+In the Meraki section, an API key with Org RW permission is needed. It is recommended that a dedicated service account
 be created for this purpose. The Organization name needs to be supplied exactly as it is configured (case sensitive).
 
-Redis is an in-memory key-value store that caches client mappings (as well as the list of network mappings.) This may 
+Redis is an in-memory key-value store that caches client mappings (as well as the list of network mappings.) This may
 be run as a Docker container.  
 
 In the HTTP Server section, specify a server salt value (any long random string you want) and define the username
@@ -119,20 +119,20 @@ and password that ClearPass will supply to authenticate to the API server.  If y
 set the value to yes and specify the location of the certificate and key if they differ from defaults.
 
 The profile map is used to define which Group Policies to map Authorization Profiles to. The group policy ID can be
-found using the Meraki API call /networks/:networkId/groupPolicies. This assumes all networks will use a consistent 
-group policy ID for each purpose. The IDs are automatically generated sequentially so as long as the group polices are 
+found using the Meraki API call /networks/:networkId/groupPolicies. This assumes all networks will use a consistent
+group policy ID for each purpose. The IDs are automatically generated sequentially so as long as the group polices are
 created in the same order (or networks are bound to a common template, or cloned from a master) this will align.
 
 ## Preparing networks.csv
-In an enterprise deployment with a distributed WAN, clients may be centrally authenticating from various sites. 
+In an enterprise deployment with a distributed WAN, clients may be centrally authenticating from various sites.
 Meraki-ise mapper determines which Meraki network ID is applicable by looking up the client IP Address in a table of
-subnet-to-network mappings. This table is loaded from config/networks.csv. 
+subnet-to-network mappings. This table is loaded from config/networks.csv.
 
-A utility program genNetworkSubnetCSV.py has been included to crawl a Meraki organization and enumerate all directly 
+A utility program genNetworkSubnetCSV.py has been included to crawl a Meraki organization and enumerate all directly
 connected subnets at the site. The results are written to the networks.csv.
 
-This table should be re-generated when VLAN/addressing/site changes are made. It may be a good idea to schedule a cron 
-job to automatically execute this periodically (eg. daily or weekly). 
+This table should be re-generated when VLAN/addressing/site changes are made. It may be a good idea to schedule a cron
+job to automatically execute this periodically (eg. daily or weekly).
 
 A sample with the required headings can be found in
 `config/networks.sample.csv`.
@@ -144,7 +144,7 @@ The easiest way to run this application is using Docker. Alternatively the code 
 ### Docker
 
 The included docker-compose.yml will build containers for the redis store, meraki-ise, meraki-csrv and redis-commander.
-You will want to comment out either meraki-ise or meraki-csrv depending which identity engine youo're integrating with. 
+You will want to comment out either meraki-ise or meraki-csrv depending which identity engine youo're integrating with.
 You may also want to comment redis-commander as it's not required other than for troubleshooting.
 
 First you need to build the container: 
