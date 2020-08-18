@@ -1,4 +1,5 @@
 # Meraki Identity Injector
+[![published](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg)](https://developer.cisco.com/codeexchange/github/repo/rylatorr/meraki-ise)
 
 This proof-of-concept application uses Cisco Identity Services Engine (ISE) to apply group policies in 
 a Cisco Meraki Network.

@@ -23,8 +23,7 @@ def main():
     # Instantiate a Meraki dashboard API session
     dashboard = meraki.DashboardAPI(
         api_key=meraki_config.api_key,
-        base_url='https://api-mp.meraki.com/api/v0/',
-        output_log=False,
+        output_log=False
         #log_file_prefix=os.path.basename(__file__)[:-3],
         #log_path='',
         #print_console=False
@@ -46,7 +45,7 @@ def main():
 
     # Get list of devices in organization
     try:
-        devices = dashboard.devices.getOrganizationDevices(org_id)
+        devices = dashboard.organizations.getOrganizationDevices(org_id)
     except meraki.APIError as e:
         print(f'Meraki API error: {e}')
     except Exception as e:
@@ -69,7 +68,7 @@ def main():
         if device['model'][:2] in ('MX', 'Z1', 'Z3') and device['networkId'] is not None:
             # Get network VLANs
             try:
-                networkVLANs = dashboard.vlans.getNetworkVlans(device["networkId"])
+                networkVLANs = dashboard.appliance.getNetworkApplianceVlans(device["networkId"])
             except meraki.APIError as e:
                 print(f'Meraki API error: {e}')
             except Exception as e:
