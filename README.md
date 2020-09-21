@@ -33,6 +33,11 @@ Deployment Walkthrough Video (15m):
 ## Preparing ISE
 
 Ensure that you have a recent version (i.e. 2.4 or newer) of ISE deployed and have pxGrid Services enabled.
+
+Ensure the network access devices are configured to send RADIUS accounting messages. These are required for 
+ISE to send the session notification. Hint: in ISE Live Sessions, those with Session Status "started" will be notified.
+If your live sessions show status "Authenticated" they are not sent to pxGrid subscribers.
+
 If you are running ISE 2.6 make sure you have at least version 2.6.0.156-Patch6-20031016. Some older 
 versions contain a bug that prevents pxGrid events from being sent out over the WebSocket.
 
